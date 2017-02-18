@@ -2,6 +2,9 @@
 secret/
 set_environment.py
 
+## Data:
+Data/
+
 #################
 ## Eclipse
 #################
