@@ -66,8 +66,8 @@ playlist_n = len(data['playlistid'])
 # out file info:
 n_files_out = 0
 
-for i in range(playlist_n):
-    
+#for i in range(playlist_n):
+for i in range(2000,playlist_n):    
     
     user_temp = data['ownerid'][i]
     play_temp = data['playlistid'][i]
