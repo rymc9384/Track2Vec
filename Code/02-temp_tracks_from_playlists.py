@@ -140,4 +140,21 @@ for i in range(playlist_n):
         token = util.prompt_for_user_token(username, scope)
         sp = spotipy.Spotify(auth=token)
         
+ 
+## Write out last tracks:
+fout = '..\Data\PlaylistInfo\m_star-tracks_info_' + str(n_files_out) + '.txt'
+with open(fout, 'wb') as f:
+    pickle.dump(track_info, f)
     
+track_info = {}
+
+fout = '..\Data\PlaylistInfo\m_star-artists_info_' + str(n_files_out) + '.txt'
+with open(fout, 'wb') as f:
+    pickle.dump(artist_info, f)
+    
+artist_info = {}
+
+fout = '..\Data\PlaylistInfo\m_star-albums_info_' + str(n_files_out) + '.txt'
+with open(fout, 'wb') as f:
+    pickle.dump(album_info, f)
+            
