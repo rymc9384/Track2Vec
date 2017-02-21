@@ -64,18 +64,32 @@ lim_track = 100
 playlist_n = len(data['playlistid'])
 
 # out file info:
-n_files_out = 0
+n_files_out = 7                     # updated for restart.
 
 #for i in range(playlist_n):
-for i in range(2000,playlist_n):    
+for i in range(3000,playlist_n):    # restart at 3,000; no such user error at 3,032
     
     user_temp = data['ownerid'][i]
     play_temp = data['playlistid'][i]
     
-
-    response = sp.user_playlist_tracks(user=user_temp,playlist_id=play_temp, \
+    try:
+        response = sp.user_playlist_tracks(user=user_temp,playlist_id=play_temp, \
                                        limit=lim_track)
-    
+    except spotipy.SpotifyException as e:
+        err_str = e.msg.split(':\n ')[-1]
+        if err_str == 'No such user':
+            print('Playlist', i, ':', err_str, '- skipping. \n')
+            continue
+        else: 
+            print('Playlist', i, ':', err_str)
+            whatdo = None
+            while whatdo not in ['continue', 'break']:
+                whatdo = input("Please enter 'continue' *OR* 'break'. \n")
+            
+            if whatdo == 'continue':
+                continue
+            else:
+                break
     
     #time.sleep(1)
     
@@ -113,10 +127,15 @@ for i in range(2000,playlist_n):
     
     # User feedback:
     print('Playlist ', str(i), ': ', str(total), ' tracks. \n')
-        
+       
     
-    # Intermediate write out of data, reset dicts, and renew API token:
-    if i >0 and i % 500 == 0:
+    # Intermediate renewal of API token:
+    if i >0 and i % 250 == 0:
+        token = util.prompt_for_user_token(username, scope)
+        sp = spotipy.Spotify(auth=token)
+        
+    # Intermediate write out of data, and reset dicts :
+    if i >0 and i % 500 == 0 or i >= playlist_n:
         fout = '..\Data\PlaylistInfo\m_star-tracks_info_' + str(n_files_out) + '.txt'
         with open(fout, 'wb') as f:
             pickle.dump(track_info, f)
@@ -137,24 +156,6 @@ for i in range(2000,playlist_n):
         
         n_files_out += 1
         
-        token = util.prompt_for_user_token(username, scope)
-        sp = spotipy.Spotify(auth=token)
+        
         
  
-## Write out last tracks:
-fout = '..\Data\PlaylistInfo\m_star-tracks_info_' + str(n_files_out) + '.txt'
-with open(fout, 'wb') as f:
-    pickle.dump(track_info, f)
-    
-track_info = {}
-
-fout = '..\Data\PlaylistInfo\m_star-artists_info_' + str(n_files_out) + '.txt'
-with open(fout, 'wb') as f:
-    pickle.dump(artist_info, f)
-    
-artist_info = {}
-
-fout = '..\Data\PlaylistInfo\m_star-albums_info_' + str(n_files_out) + '.txt'
-with open(fout, 'wb') as f:
-    pickle.dump(album_info, f)
-            
