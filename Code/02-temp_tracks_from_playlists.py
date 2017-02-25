@@ -68,7 +68,7 @@ n_files_out =                      # updated for restart.
 
 #for i in range(playlist_n):
 #for i in range(3000,playlist_n):    # restart at 3,000; no such user error at 3,032
-for i in range(17807,playlist_n):    # restart at 17,807; no 'total' key at 17,806
+for i in range(62117,playlist_n + 1):    # restart at 17,807; no 'total' key at 17,806
     
     user_temp = data['ownerid'][i]
     play_temp = data['playlistid'][i]
@@ -88,18 +88,16 @@ for i in range(17807,playlist_n):    # restart at 17,807; no 'total' key at 17,8
                                        limit=lim_track)
         else: 
             print('Playlist', i, ':', err_str)
-            whatdo = None
-            while whatdo not in ['continue', 'break']:
-                whatdo = input("Please enter 'continue' *OR* 'break'. \n")
-            
-            if whatdo == 'continue':
-                continue
-            else:
-                break
+            continue
     
     #time.sleep(1)
+    if 'total' not in response.keys():
+        print("Response didn't yield a total; skipping \n")
+        continue
     
     x = pFun.splitter(response=response, fields=True, has_meta=True)
+    
+    
     
     ## Add track info:
     track_info[play_temp] = x[0]
@@ -133,15 +131,7 @@ for i in range(17807,playlist_n):    # restart at 17,807; no 'total' key at 17,8
                                                limit=lim_track,offset=count)
                 
             else:
-                print('Playlist', i, ':', err_str)
-                whatdo = None
-                while whatdo not in ['continue', 'break']:
-                    whatdo = input("Please enter 'continue' *OR* 'break'. \n")
-                
-                if whatdo == 'continue':
-                    continue
-                else:
-                    break
+                continue
                 
         x = pFun.splitter(response=response, fields=True, has_meta=False)
         
@@ -157,7 +147,7 @@ for i in range(17807,playlist_n):    # restart at 17,807; no 'total' key at 17,8
     print('Playlist ', str(i), ': ', str(total), ' tracks. \n')
              
     # Intermediate write out of data, and reset dicts :
-    if i >0 and i % 500 == 0 or i >= playlist_n:
+    if i >0 and i % 500 == 0 or i == (playlist_n - 1):
         fout = '..\Data\PlaylistInfo\m_star-tracks_info_' + str(n_files_out) + '.txt'
         with open(fout, 'wb') as f:
             pickle.dump(track_info, f)
@@ -177,7 +167,5 @@ for i in range(17807,playlist_n):    # restart at 17,807; no 'total' key at 17,8
         album_info = {}
         
         n_files_out += 1
-        
-        
-        
+                
  
