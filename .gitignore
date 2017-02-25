@@ -5,6 +5,9 @@ set_environment.py
 ## Data:
 Data/
 
+## GloVe Model Scripts:
+GloVe/
+
 #################
 ## Eclipse
 #################
