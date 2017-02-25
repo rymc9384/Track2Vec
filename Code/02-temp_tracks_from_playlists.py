@@ -68,7 +68,7 @@ n_files_out =                      # updated for restart.
 
 #for i in range(playlist_n):
 #for i in range(3000,playlist_n):    # restart at 3,000; no such user error at 3,032
-for i in range(62117,playlist_n + 1):    # restart at 17,807; no 'total' key at 17,806
+for i in range(62117,playlist_n):    # restart at 17,807; no 'total' key at 17,806
     
     user_temp = data['ownerid'][i]
     play_temp = data['playlistid'][i]
