@@ -171,6 +171,8 @@ files = glob.glob('../Data/PlaylistInfo/m_star-tracks_info_*')
 
 for i in range(len(files)):
     
+    print('Starting on file', i, ':', files[i], '\n')
+    
     with open(files[i], 'rb') as f:
         data = pickle.load(f)
         
