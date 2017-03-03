@@ -14,7 +14,7 @@ import glob
 ###################################
 
 ##
-## 2) Track ID to Artist Info Dictionary:
+## 1) Track ID to Artist Info Dictionary:
 ## 
 
 def tID_aInfo(data,id_info=None):
