@@ -86,8 +86,8 @@ keys = list(tab.keys())
 
 ## LOAD VECTORS: 
     
-vocab_file = 'E:/Users/rbm166/Desktop/GloVe_Spotify/vocab.txt'
-vectors_file = 'E:/Users/rbm166/Desktop/GloVe_Spotify/vectors.txt'
+vocab_file = 'E:/Users/rbm166/Desktop/GloVe_Spotify/500k_50d/vocab.txt'
+vectors_file = 'E:/Users/rbm166/Desktop/GloVe_Spotify/500k_50d/vectors.txt'
 
 
 vector, vocab, v_idx = generate(vocab_file,vectors_file)
