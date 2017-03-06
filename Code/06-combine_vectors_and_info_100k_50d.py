@@ -83,7 +83,18 @@ df_vect = pd.DataFrame.from_dict(data=vector_dict,orient='index')
 df_final = df_lookup.join(other=df_vect,how='right')
 
 
+## 1d) Put in the frequency values for the "filler" words ('ROOT', 'END', & 'DUMMY'):
+df_final.set_value('ROOT','freq',100016)
+df_final.set_value('END','freq',100016)
+df_final.set_value('DUMMY','freq',500080)
+
+# NOTE: Values come from the "GloVe vocab100k_50d.txt" file, just didn't want 
+#       to read the lines in.
+
+
 ###################################
 ### 2) Write out to CSV:
 ###################################
 df_final.to_csv('../Data/01-vectors_lookup_combined100k_50d.csv')
+
+
