@@ -71,40 +71,57 @@ def into_vocab_data(vocab,lookup,lookupkeys,component):
     count = 0    
     n = len(vkeys)
     
-     
-    # begin for loop over the vocab keys, pulling info from matching keys:
-    for k in vkeys:
-        invocab = k in lookupkeys
-        
-        # begin if lookup key in vocab: 
-        if invocab == False:    # (should always be true but you never know)
-            next
-        else:
-            # begin if component == TYPE:
-            if component == 'track':
-                for i in range(len(vocab_track_keys)):
-                    vocab[k][vocab_track_keys[i]] = lookup[k][comp_track_keys[i]]
-                    
-            elif component == 'artist':
-                for i in range(len(vocab_artist_keys)):
-                    vocab[k][vocab_artist_keys[i]] = lookup[k][comp_artist_keys[i]]
+    # begin if looking at tracks:
+    if component == 'track':
+        # begin for loop over the vocab keys, pulling info from matching keys:
+        for k in vkeys:
             
-            elif component == 'album':
-                for i in range(len(vocab_album_keys)):
-                    vocab[k][vocab_album_keys[i]] = lookup[k][comp_album_keys[i]]
-
-            else:
-                next
-            # end if component == TYPE
-        # end if lookup key in vocab
+            # begin for loop over the keys containing track info:
+            for i in range(len(vocab_track_keys)):
+                vocab[k][vocab_track_keys[i]] = lookup[k][comp_track_keys[i]]
+            # end for i; keys w/ track info         
+            # begin if count is divisible by 1000:
+            if count % 1000 == 0:
+                print(count,"/", n, "\n")
+            
+            count +=1
+            # end if count is divisible by 1000
+        # end for k; keys marking track ids
         
-        # begin if count is divisible by 100:
-        if count % 100 == 0:
-            print(count,"/", n, "\n")
+    # end if component == 'track'
+    # begin if we're looking at artist info:
+    elif component == 'artist':
+        # begin for loop over the vocab keys, pulling info from matching keys:
+        for k in vkeys:
+            # begin for loop over the keys containing track info:
+            for i in range(len(vocab_artist_keys)):
+                vocab[k][vocab_artist_keys[i]] = lookup[k][comp_artist_keys[i]]
+            # end for i; keys w/ track info
+            # begin if count is divisible by 1000:
+            if count % 1000 == 0:
+                print(count,"/", n, "\n")
+            
+            count +=1
+            # end if count is divisible by 1000
+        # end for k; keys marking track ids
         
-        count +=1
-        # end if count is divisible by 100
-    # end for loop over lookup keys
+    # end if component == 'artist'
+    # begin if we're looking at album info:      
+    elif component == 'album':
+        # begin for loop over the vocab keys, pulling info from matching keys:
+        for k in vkeys:
+            # begin for loop over the keys containing track info:
+            for i in range(len(vocab_album_keys)):
+                vocab[k][vocab_album_keys[i]] = lookup[k][comp_album_keys[i]]
+            # end for i; keys w/ track info
+            # begin if count is divisible by 1000:
+            if count % 1000 == 0:
+                print(count,"/", n, "\n")
+            
+            count +=1
+            # end if count is divisible by 1000
+        # end for k; keys marking track ids
+    # end if component == 'album'
     
     return(vocab)
 
@@ -119,6 +136,10 @@ vocab_file = 'E:/Users/rbm166/Desktop/GloVe_Spotify/vocab100k_50d.txt'
 with open(vocab_file, 'r') as f:
     vocablist = f.readlines()
 
+# Remove the 'ROOT', 'END' and 'DUMMY' items:
+for i in range(3):
+    vocablist.pop(0)
+
 #########
 # 0b) Putting vocabulary into dictionary, with one item being the frequency:
 vocab = {}
@@ -126,7 +147,6 @@ for v in vocablist:
     temp_v = v.split(' ')
     vocab[temp_v[0]] = {}
     vocab[temp_v[0]]['freq'] = int(temp_v[1].strip('\n'))
-    
 
 ###################################
 ### 1) ADDING TRACK INFO TO VOCAB
